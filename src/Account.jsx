@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import Avatar from './Avatar'
+import { useNavigate } from 'react-router-dom'
 
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
+  const navigate = useNavigate() // Corrected: useNavigate should be called as a function
 
   useEffect(() => {
     let ignore = false
@@ -65,18 +67,20 @@ export default function Account({ session }) {
   }
 
   return (
+    <div>
+      <button style={{ color: "green" }} onClick={() => navigate("/lessonpage")}>
+        Navigate to Lesson Dashboard
+      </button>
+    
     <form onSubmit={updateProfile} className="form-widget">
-
-    <Avatar
+      <div>
+      <Avatar
       url={avatar_url}
       size={150}
       onUpload={(event, url) => {
         updateProfile(event, url)
       }}
     />
-      <div>
-
-     
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={session.user.email} disabled />
       </div>
@@ -112,5 +116,6 @@ export default function Account({ session }) {
         </button>
       </div>
     </form>
+    </div>
   )
 }
